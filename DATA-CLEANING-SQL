@@ -1,0 +1,82 @@
+----Remove Leading and Trailing Spaces (TRIM)
+
+UPDATE your_table
+SET column_name = TRIM(column_name)
+WHERE column_name IS NOT NULL;
+
+----Remove Duplicate Rows (Keep Only One Copy)
+
+DELETE FROM your_table a
+WHERE ROWID > (
+    SELECT MIN(ROWID)
+    FROM your_table b
+    WHERE a.column1 = b.column1
+    AND a.column2 = b.column2
+    -- Add more columns as needed
+);
+
+-------Fix NULL Values with Default / Placeholder Values
+
+UPDATE your_table
+SET column_name = 'Unknown'
+WHERE column_name IS NULL;
+
+
+-------Convert Text to Proper Case / Uppercase / Lowercase
+
+-- Uppercase
+UPDATE your_table
+SET column_name = UPPER(column_name);
+
+-- Lowercase
+UPDATE your_table
+SET column_name = LOWER(column_name);
+
+-- Proper Case (Oracle example using INITCAP)
+UPDATE your_table
+SET column_name = INITCAP(column_name);
+
+
+---Remove Non-Numeric Characters (From a Numeric Text Column)
+
+UPDATE your_table
+SET column_name = REGEXP_REPLACE(column_name, '[^0-9]', '')
+WHERE column_name IS NOT NULL;
+
+---Remove Special Characters (Keep Only Alphabets)
+
+UPDATE your_table
+SET column_name = REGEXP_REPLACE(column_name, '[^A-Za-z]', '')
+WHERE column_name IS NOT NULL;
+
+----- Standardize Date Formats
+
+UPDATE your_table
+SET date_column = TO_DATE(date_column, 'DD-MM-YYYY')
+WHERE REGEXP_LIKE(date_column, '^\d{2}-\d{2}-\d{4}$');
+
+
+---Identify Missing / NULL Data
+
+SELECT *
+FROM your_table
+WHERE column_name IS NULL;
+
+--Identify Outliers (Example for Age Column)
+
+SELECT *
+FROM your_table
+WHERE age_column < 0 OR age_column > 120;
+
+--Replace Incorrect Values
+UPDATE your_table
+SET gender_column = CASE
+    WHEN gender_column IN ('M', 'Male') THEN 'Male'
+    WHEN gender_column IN ('F', 'Female') THEN 'Female'
+    ELSE 'Other'
+END;
+
+
+
+
+
