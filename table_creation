@@ -1,0 +1,4 @@
+CREATE TABLE users_credentials (
+    username VARCHAR2(100) PRIMARY KEY,
+    password_hash RAW(256) -- Store hash as RAW
+);
